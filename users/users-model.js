@@ -12,7 +12,6 @@ function find() {
   return db("users").select("id", "username").orderBy("id");
 }
 
-// return the role name as role, together with the user data
 function findBy(filter) {
   return db('users')
   .where(filter)

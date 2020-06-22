@@ -11,6 +11,10 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.get("/", (req, res) => {
+    res.status(200).json({ api: "up" });
+  });
+
 server.use('/api', authRouter);
 
 module.exports = server;
