@@ -20,6 +20,10 @@
 - - REQUIRES TOKEN
 - Requires name
 - Posts new howto as long as logged in user's role is creator
+- PUT /howtos/:id
+- - REQUIRES TOKEN
+- Requires name
+- Edits howto where :id is howto id
 - GET /howtos/:id/steps
 - - Returns array of all steps assigned to a howto
 - GET /howtos/creator
