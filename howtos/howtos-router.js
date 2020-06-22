@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken')
 const authenticator  = require('../auth/authenticate-middleware.js');
 const authCreator = require('../auth/auth-creator.js')
 
@@ -72,5 +73,16 @@ router.get('/:id/steps', (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    ht.deleteHowto(id)
+    .then(howto => {
+        res.status(200).json(howto);
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
+})
 
 module.exports = router;

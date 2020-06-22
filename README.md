@@ -32,7 +32,7 @@
 # data schema
 - all fields marked with * are required
 - users:
-- - { id: integer, *username: string, *password: string }
+- - { id: integer, *username: string, *email: string, *password: string }
 - howtos:
 - - { id: integer, *name: string, creator_id: integer }
 - steps:

@@ -20,7 +20,7 @@ server.use('/howtos', logger, howRouter);
 
 function logger(req, res, next) {
     const today = new Date().toLocaleDateString('en-US');
-    console.log(`${today} ${req.method} ${req.url} ${req.body.data}`);
+    console.log(`${today} ${req.method} ${req.url} ${req.body}`);
 
     next();
 }
