@@ -20,8 +20,14 @@ function getSteps(id) {
         .select("s.step_number", "s.name")
 }
 
+async function addHowto(howto) {
+    const [id] = await db("howtos").insert(howto, "id");
+    return findBy({id});
+}
+
 module.exports = {
     getHowTos,
     getSteps,
-    findBy
+    findBy,
+    addHowto
 }

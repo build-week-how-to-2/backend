@@ -1,5 +1,6 @@
 const express = require('express');
 const authenticator = require('../auth/authenticate-middleware.js');
+const authCreator = require('../auth/auth-creator.js')
 
 const ht = require('./howtos-model.js');
 
@@ -14,6 +15,21 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.post("/", authCreator, authenticator, (req, res) => {
+    const newHowto = {
+      name: req.body.name,
+      creator_id: req.decodedToken.userId,
+    };
+    ht.addHowto(newHowto)
+      .then((howto) => {
+        res.status(201).json({ message: "Howto posted", howto });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ errorMessage: err.message });
+      });
+  });
 
 router.get("/creator", authenticator, (req, res) => {
       ht.findBy({ creator_id: req.decodedToken.userId })
