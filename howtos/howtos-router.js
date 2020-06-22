@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.post("/", authenticator, authCreator, (req, res) => {
     const newHowto = {
       name: req.body.name,
-      creator_id: req.decodedToken.userId,
+      creator_id: req.decodedToken.id,
     };
     ht.addHowto(newHowto)
       .then((howto) => {
@@ -33,7 +33,7 @@ router.post("/", authenticator, authCreator, (req, res) => {
   });
 
 router.get("/creator", authenticator, (req, res) => {
-      ht.findBy({ creator_id: req.decodedToken.userId })
+      ht.findBy({ creator_id: req.decodedToken.id })
       .then((howtos) => {
         res.status(200).json(howtos);
       })
@@ -46,9 +46,7 @@ router.get("/creator", authenticator, (req, res) => {
 router.put('/:id', authenticator, authCreator, (req, res) => {
     ht.findBy({ id: req.params.id }).first()
     .then(howto => {
-        console.log(howto);
-        console.log(req.decodedToken.userId);
-        if(howto.creator_id === req.decodedToken.userId){
+        if(howto.creator_id === req.decodedToken.id){
             ht.updateHowto(req.body, req.params.id)
             .then(resp => {
                 res.status(200).json(resp)
@@ -74,7 +72,7 @@ router.get('/:id/steps', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticator, authCreator, (req, res) => {
     const { id } = req.params;
     ht.deleteHowto(id)
     .then(howto => {
