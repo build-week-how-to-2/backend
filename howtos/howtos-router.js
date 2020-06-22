@@ -1,5 +1,5 @@
 const express = require('express');
-const authenticator = require('../auth/authenticate-middleware.js');
+const authenticator  = require('../auth/authenticate-middleware.js');
 const authCreator = require('../auth/auth-creator.js')
 
 const ht = require('./howtos-model.js');
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post("/", authCreator, authenticator, (req, res) => {
+router.post("/", authenticator, authCreator, (req, res) => {
     const newHowto = {
       name: req.body.name,
       creator_id: req.decodedToken.userId,
@@ -41,6 +41,25 @@ router.get("/creator", authenticator, (req, res) => {
         res.status(500).json({ errorMessage: error.message });
       });
 });
+
+router.put('/:id', authenticator, authCreator, (req, res) => {
+    ht.findBy({ id: req.params.id }).first()
+    .then(howto => {
+        console.log(howto);
+        console.log(req.decodedToken.userId);
+        if(howto.creator_id === req.decodedToken.userId){
+            ht.updateHowto(req.body, req.params.id)
+            .then(resp => {
+                res.status(200).json(resp)
+            })
+            .catch(err => {
+                res.status(500).json({ errorMessage: err.message });
+            })
+        } else {
+            res.status(400).json({ message: 'Logged in user does not match how creator. '})
+        }
+    })
+})
 
 
 router.get('/:id/steps', (req, res) => {
