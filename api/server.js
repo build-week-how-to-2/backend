@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const authenticate = require('../auth/authenticate-middleware.js');
 const authRouter = require('../auth/auth-router.js');
 const howRouter = require('../howtos/howtos-router.js')
 
@@ -17,6 +16,6 @@ server.get("/", (req, res) => {
 });
 
 server.use('/api', authRouter);
-server.use('/howtos', authenticate, howRouter);
+server.use('/howtos', howRouter);
 
 module.exports = server;

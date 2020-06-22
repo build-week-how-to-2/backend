@@ -4,6 +4,15 @@ function getHowTos() {
     return db("howtos")
 }
 
+function findBy(filter) {
+    if(filter){
+        return db("howtos")
+            .where(filter);
+    } else {
+        return db("howtos");
+    }
+}
+
 function getSteps(id) {
     return db('howtos as h')
         .join('steps as s', 's.howto_id', 'h.id')
@@ -13,5 +22,6 @@ function getSteps(id) {
 
 module.exports = {
     getHowTos,
-    getSteps
+    getSteps,
+    findBy
 }

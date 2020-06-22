@@ -1,4 +1,5 @@
 const express = require('express');
+const authenticator = require('../auth/authenticate-middleware.js');
 
 const ht = require('./howtos-model.js');
 
@@ -13,6 +14,18 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.get("/creator", authenticator, (req, res) => {
+      ht.findBy({ creator_id: req.decodedToken.userId })
+      .then((howtos) => {
+        res.status(200).json(howtos);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ errorMessage: error.message });
+      });
+});
+
 
 router.get('/:id/steps', (req, res) => {
     const { id } = req.params;
