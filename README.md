@@ -6,7 +6,7 @@
 # endpoints
 ## /api
 - POST /api/register
-- - Requires username: string, password: string
+- - Requires username: string, password: string, role: string(either 'user' or 'creator') defaults to 'user';
 - - RETURNS data { email, username, hashed password }
 - POST /api/login
 - - Requires username, password
