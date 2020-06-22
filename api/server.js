@@ -15,7 +15,14 @@ server.get("/", (req, res) => {
     res.status(200).json({ api: "up" });
 });
 
-server.use('/api', authRouter);
-server.use('/howtos', howRouter);
+server.use('/api', logger, authRouter);
+server.use('/howtos', logger, howRouter);
+
+function logger(req, res, next) {
+    const today = new Date().toLocaleDateString('en-US');
+    console.log(`${today} ${req.method} ${req.url} ${req.body.data}`);
+
+    next();
+}
 
 module.exports = server;
