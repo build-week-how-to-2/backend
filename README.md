@@ -1,7 +1,7 @@
 # backend
 
 # root api directory
-- not yet deployed
+- https://how-to-2.herokuapp.com/
 
 # endpoints
 ## /api
@@ -24,6 +24,9 @@
 - - REQUIRES TOKEN
 - Requires name
 - Edits howto where :id is howto id
+- DELETE /howtos/:id
+- - REQUIRES TOKEN
+- Will delete post only if logged in user is owner of the post
 - GET /howtos/:id/steps
 - - Returns array of all steps assigned to a howto
 - GET /howtos/creator

@@ -2,6 +2,7 @@ const db = require("../database/dbConfig.js");
 
 module.exports = {
   add,
+  get,
   find,
   findBy,
   findById,
@@ -10,6 +11,10 @@ module.exports = {
 
 function find() {
   return db("users").select("id", "username").orderBy("id");
+}
+
+function get(){
+  return db("users");
 }
 
 function findBy(filter) {
