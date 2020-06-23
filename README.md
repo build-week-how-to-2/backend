@@ -22,6 +22,8 @@
 - - REQUIRES TOKEN
 - Requires name
 - Posts new howto as long as logged in user's role is creator
+- GET /howtos/:id
+- - Returns howto with id of :id
 - PUT /howtos/:id
 - - REQUIRES TOKEN
 - Requires name

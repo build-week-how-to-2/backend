@@ -6,6 +6,13 @@ function getHowTos() {
             .select("h.id", 'u.username as creator', 'h.name', 'h.body', 'h.img', 'h.cat', 'h.upvotes', 'h.downvotes')
 }
 
+function get(id) {
+    return db("howtos as h")
+    .join('users as u', 'u.id', 'h.creator_id')
+    .where('h.id', id)
+    .select("h.id", 'u.username as creator', 'h.name', 'h.body', 'h.img', 'h.cat', 'h.upvotes', 'h.downvotes')
+}
+
 function findBy(filter) {
     if(filter){
         return db("howtos")
@@ -42,6 +49,7 @@ async function deleteHowto(id) {
 }
 
 module.exports = {
+    get,
     getHowTos,
     findBy,
     addHowto,

@@ -45,6 +45,16 @@ router.get("/creator", authenticator, (req, res) => {
       });
 });
 
+router.get("/:id", (req, res) => {
+    ht.get(req.params.id).first()
+    .then(howto => {
+        res.status(200).json(howto)
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+});
+
 router.put('/:id', authenticator, authCreator, (req, res) => {
     ht.findBy({ id: req.params.id }).first()
     .then(howto => {
