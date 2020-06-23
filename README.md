@@ -12,6 +12,8 @@
 - - Requires username, password
 - - On successful login, returns token as "token", success message as "Welcome to our API".
 - - If unable to validate username/password combo, returns status 401.
+- GET /api
+- - Returns array of all users
 
 ## /howtos
 - GET /howtos
