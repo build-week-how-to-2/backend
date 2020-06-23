@@ -1,5 +1,4 @@
 const express = require('express');
-const jwt = require('jsonwebtoken')
 const authenticator  = require('../auth/authenticate-middleware.js');
 const authCreator = require('../auth/auth-creator.js')
 
@@ -20,6 +19,9 @@ router.get('/', (req, res) => {
 router.post("/", authenticator, authCreator, (req, res) => {
     const newHowto = {
       name: req.body.name,
+      body: req.body.body,
+      img: req.body.img,
+      cat: req.body.cat,
       creator_id: req.decodedToken.id,
     };
     ht.addHowto(newHowto)
@@ -33,7 +35,7 @@ router.post("/", authenticator, authCreator, (req, res) => {
   });
 
 router.get("/creator", authenticator, (req, res) => {
-      ht.findBy({ creator_id: req.decodedToken.id })
+      ht.creatorHowto({ creator_id: req.decodedToken.id })
       .then((howtos) => {
         res.status(200).json(howtos);
       })
@@ -59,18 +61,6 @@ router.put('/:id', authenticator, authCreator, (req, res) => {
         }
     })
 })
-
-
-router.get('/:id/steps', (req, res) => {
-    const { id } = req.params;
-    ht.getSteps(id)
-    .then(steps => {
-        res.status(200).json(steps);
-    })
-    .catch(err => {
-        res.status(500).json(err);
-    });
-});
 
 router.delete('/:id', authenticator, authCreator, (req, res) => {
     const { id } = req.params;
