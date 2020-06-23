@@ -15,14 +15,14 @@ server.get("/", (req, res) => {
     res.status(200).json({ api: "up" });
 });
 
-server.use('/api', logger, authRouter);
-server.use('/howtos', logger, howRouter);
+server.use('/api', authRouter);
+server.use('/howtos', howRouter);
 
-function logger(req, res, next) {
-    const today = new Date().toLocaleDateString('en-US');
-    console.log(`${today} ${req.method} ${req.url} ${req.body}`);
+// function logger(req, res, next) {
+//     const today = new Date().toLocaleDateString('en-US');
+//     console.log(`${today} ${req.method} ${req.url} ${req.body}`);
 
-    next();
-}
+//     next();
+// }
 
 module.exports = server;
