@@ -12,7 +12,7 @@ function isValid(user) {
 
 function createToken(user) {
     const payload = {
-      userId: user.id,
+      id: user.id,
       username: user.username,
       role: user.role,
     };

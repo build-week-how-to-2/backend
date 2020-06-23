@@ -25,9 +25,25 @@ async function addHowto(howto) {
     return findBy({id});
 }
 
+async function updateHowto(howto, howtoId) {
+    const foo = await db("howtos")
+        .where("id", howtoId)
+        .update(howto);
+    return findBy({id: howtoId});
+}
+
+async function deleteHowto(id) {
+    const foo = await db("howtos")
+        .where("id", id)
+        .del()
+    return findBy({id: id});
+}
+
 module.exports = {
     getHowTos,
     getSteps,
     findBy,
-    addHowto
+    addHowto,
+    updateHowto,
+    deleteHowto,
 }

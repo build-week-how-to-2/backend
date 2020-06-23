@@ -1,5 +1,6 @@
 const express = require('express');
-const authenticator = require('../auth/authenticate-middleware.js');
+const jwt = require('jsonwebtoken')
+const authenticator  = require('../auth/authenticate-middleware.js');
 const authCreator = require('../auth/auth-creator.js')
 
 const ht = require('./howtos-model.js');
@@ -16,10 +17,10 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post("/", authCreator, authenticator, (req, res) => {
+router.post("/", authenticator, authCreator, (req, res) => {
     const newHowto = {
       name: req.body.name,
-      creator_id: req.decodedToken.userId,
+      creator_id: req.decodedToken.id,
     };
     ht.addHowto(newHowto)
       .then((howto) => {
@@ -32,7 +33,7 @@ router.post("/", authCreator, authenticator, (req, res) => {
   });
 
 router.get("/creator", authenticator, (req, res) => {
-      ht.findBy({ creator_id: req.decodedToken.userId })
+      ht.findBy({ creator_id: req.decodedToken.id })
       .then((howtos) => {
         res.status(200).json(howtos);
       })
@@ -41,6 +42,23 @@ router.get("/creator", authenticator, (req, res) => {
         res.status(500).json({ errorMessage: error.message });
       });
 });
+
+router.put('/:id', authenticator, authCreator, (req, res) => {
+    ht.findBy({ id: req.params.id }).first()
+    .then(howto => {
+        if(howto.creator_id === req.decodedToken.id){
+            ht.updateHowto(req.body, req.params.id)
+            .then(resp => {
+                res.status(200).json(resp)
+            })
+            .catch(err => {
+                res.status(500).json({ errorMessage: err.message });
+            })
+        } else {
+            res.status(400).json({ message: 'Logged in user does not match how creator. '})
+        }
+    })
+})
 
 
 router.get('/:id/steps', (req, res) => {
@@ -53,5 +71,16 @@ router.get('/:id/steps', (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.delete('/:id', authenticator, authCreator, (req, res) => {
+    const { id } = req.params;
+    ht.deleteHowto(id)
+    .then(howto => {
+        res.status(200).json(howto);
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
+})
 
 module.exports = router;
