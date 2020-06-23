@@ -29,6 +29,7 @@ exports.up = function(knex) {
   
 exports.down = function(knex, Promise) {
     return knex.schema
+    .dropTableIfExists('steps')
     .dropTableIfExists('howtos')
     .dropTableIfExists('users');
 };
