@@ -1,7 +1,9 @@
 const db = require('../database/dbConfig.js');
 
 function getHowTos() {
-    return db("howtos")
+    return db("howtos as h")
+            .join('users as u', 'u.id', 'h.creator_id')
+            .select("h.id", 'u.username as creator', 'h.name', 'h.body', 'h.img', 'h.cat', 'h.upvotes', 'h.downvotes')
 }
 
 function findBy(filter) {
@@ -13,11 +15,11 @@ function findBy(filter) {
     }
 }
 
-function getSteps(id) {
-    return db('howtos as h')
-        .join('steps as s', 's.howto_id', 'h.id')
-        .where('h.id', id)
-        .select("s.step_number", "s.name")
+function creatorHowto(filter) {
+    return db("howtos as h")
+            .join("users as u", "u.id", "h.creator_id")
+            .where(filter)
+            .select("h.id", 'u.username as creator', 'h.name', 'h.body', 'h.img', 'h.cat', 'h.upvotes', 'h.downvotes')
 }
 
 async function addHowto(howto) {
@@ -41,9 +43,9 @@ async function deleteHowto(id) {
 
 module.exports = {
     getHowTos,
-    getSteps,
     findBy,
     addHowto,
     updateHowto,
     deleteHowto,
+    creatorHowto
 }

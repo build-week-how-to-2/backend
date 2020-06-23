@@ -6,6 +6,7 @@ exports.seed = function(knex) {
         {
           creator_id: 1,
           name: 'how to make a database',
+          body: 'make an index.js file, make profit'
         }
   ]);
 };
