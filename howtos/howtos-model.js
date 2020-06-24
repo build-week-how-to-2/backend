@@ -4,6 +4,7 @@ function getHowTos() {
     return db("howtos as h")
             .join('users as u', 'u.id', 'h.creator_id')
             .select("h.id", 'u.username as creator', 'h.name', 'h.body', 'h.img', 'h.cat', 'h.upvotes', 'h.downvotes')
+            .orderBy('h.upvotes', "desc")
 }
 
 function get(id) {
