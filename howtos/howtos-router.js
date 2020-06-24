@@ -72,6 +72,34 @@ router.put('/:id', authenticator, authCreator, (req, res) => {
     })
 })
 
+router.put('/:id/upvote', (req, res) => {
+    ht.findBy({ id: req.params.id }).first()
+    .then(howto => {
+        howto.upvotes += 1;
+        ht.updateHowto(howto, req.params.id)
+        .then(resp => {
+            res.status(200).json(resp)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    })
+})
+
+router.put('/:id/downvote', (req, res) => {
+    ht.findBy({ id: req.params.id }).first()
+    .then(howto => {
+        howto.downvotes += 1;
+        ht.updateHowto(howto, req.params.id)
+        .then(resp => {
+            res.status(200).json(resp)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    })
+})
+
 router.delete('/:id', authenticator, authCreator, (req, res) => {
     const { id } = req.params;
     ht.deleteHowto(id)
