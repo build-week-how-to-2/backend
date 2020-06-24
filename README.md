@@ -36,6 +36,12 @@
 - - Returns array of all howtos that logged in user has created
 - - Returns objects as { id: integer, creator: string, name: string, body: string,
                          img: string, cat: string }
+- PUT /howtos/:id/upvote
+- Does not require a body
+- Adds 1 to the upvote counter to the howto with id of :id
+- PUT /howtos/:id/downvote
+- Does not require a body
+- Adds 1 to the downvote counter to the howto with id of :id
 # data schema
 - all fields marked with * are required
 - users:
